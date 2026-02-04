@@ -36,17 +36,39 @@
     "total": 0,
     "resolved": 0,
     "unresolved": 0,
-    "byType": { "syntax": 0, "runtime": 0, "build": 0, "dependency": 0, "config": 0, "other": 0 },
+    "byType": {
+      "syntax": 0,
+      "runtime": 0,
+      "build": 0,
+      "dependency": 0,
+      "config": 0,
+      "other": 0
+    },
     "log": []
   },
   "quality": {
     "testCoverage": {
       "overall": 0,
       "byType": {
-        "unit": { "count": 0, "coverage": 0, "notes": "No unit tests yet" },
-        "integration": { "count": 0, "coverage": 0, "notes": "No integration tests" },
-        "e2e": { "count": 0, "coverage": 0, "notes": "No E2E tests" },
-        "manual": { "count": 8, "notes": "Tested all user flows manually" }
+        "unit": {
+          "count": 0,
+          "coverage": 0,
+          "notes": "No unit tests yet"
+        },
+        "integration": {
+          "count": 0,
+          "coverage": 0,
+          "notes": "No integration tests"
+        },
+        "e2e": {
+          "count": 0,
+          "coverage": 0,
+          "notes": "No E2E tests"
+        },
+        "manual": {
+          "count": 8,
+          "notes": "Tested all user flows manually"
+        }
       },
       "notes": "Manual testing only"
     },
@@ -60,7 +82,10 @@
     "dependencyHealth": {
       "totalDependencies": 2,
       "outdatedCount": 0,
-      "oldestDepTimeSinceLastRelease": { "name": "express", "months": 1 },
+      "oldestDepTimeSinceLastRelease": {
+        "name": "express",
+        "months": 1
+      },
       "mostOutdated": null,
       "notes": "Minimal deps - express and uuid only"
     },
@@ -94,7 +119,8 @@
         "puaDensity": 40,
         "notes": "Inline comments in JS"
       }
-    }
+    },
+    "codeHygieneScore": 100
   },
   "security": {
     "vulnerabilities": {
@@ -110,13 +136,35 @@
     }
   },
   "business": {
-    "domainFitScore": { "score": 9, "max": 10, "notes": "shopq = shop + quick - perfect fit" },
-    "monetizationClarity": { "score": 7, "max": 10, "model": "Freemium + ads", "notes": "Free basic, premium for sync/backup" },
-    "revenuePotentialScore": { "score": 7, "max": 10, "tam": "Millions of grocery shoppers", "avgPrice": "$2-5/month premium", "conversionEstimate": "3-5%", "notes": "High volume, low price" },
+    "domainFitScore": {
+      "score": 9,
+      "max": 10,
+      "notes": "shopq = shop + quick - perfect fit"
+    },
+    "monetizationClarity": {
+      "score": 7,
+      "max": 10,
+      "model": "Freemium + ads",
+      "notes": "Free basic, premium for sync/backup"
+    },
+    "revenuePotentialScore": {
+      "score": 7,
+      "max": 10,
+      "tam": "Millions of grocery shoppers",
+      "avgPrice": "$2-5/month premium",
+      "conversionEstimate": "3-5%",
+      "notes": "High volume, low price"
+    },
     "infrastructureCost": {
       "monthlyEstimate": 0,
       "currency": "USD",
-      "breakdown": { "hosting": 0, "database": 0, "storage": 0, "cdn": 0, "other": 0 },
+      "breakdown": {
+        "hosting": 0,
+        "database": 0,
+        "storage": 0,
+        "cdn": 0,
+        "other": 0
+      },
       "notes": "Zero backend - all localStorage"
     }
   },
@@ -142,26 +190,85 @@
     }
   },
   "complexity": {
-    "totalAddressableMarket": { "score": 8, "max": 10, "notes": "Everyone who grocery shops" },
-    "averageCompetitorPrice": { "value": 0, "notes": "Most are free with ads" },
-    "technicalComplexity": { "score": 3, "max": 10, "breakdown": { 
-      "backend": "Static file server only",
-      "frontend": "Vanilla JS with localStorage",
-      "features": "CRUD, categories, share"
-    }},
-    "originality": { "score": 4, "max": 10, "notes": "Standard shopping list - execution matters" },
-    "modernityOfStack": { "score": 7, "max": 10, "stack": ["Node.js", "Express", "Vanilla JS", "localStorage"] },
-    "appSpeedAtDeployment": { "score": 10, "max": 10, "notes": "Instant - no API calls" },
-    "securityAtDeployment": { "score": 10, "max": 10, "notes": "No auth needed, no sensitive data" },
-    "bugDensityAtDeployment": { "knownBugs": 0, "notes": "Tested all flows" },
-    "transferability": { "score": 10, "max": 10, "notes": "Static hosting anywhere" }
+    "totalAddressableMarket": {
+      "score": 8,
+      "max": 10,
+      "notes": "Everyone who grocery shops"
+    },
+    "averageCompetitorPrice": {
+      "value": 0,
+      "notes": "Most are free with ads"
+    },
+    "technicalComplexity": {
+      "score": 3,
+      "max": 10,
+      "breakdown": {
+        "backend": "Static file server only",
+        "frontend": "Vanilla JS with localStorage",
+        "features": "CRUD, categories, share"
+      }
+    },
+    "originality": {
+      "score": 4,
+      "max": 10,
+      "notes": "Standard shopping list - execution matters"
+    },
+    "modernityOfStack": {
+      "score": 7,
+      "max": 10,
+      "stack": [
+        "Node.js",
+        "Express",
+        "Vanilla JS",
+        "localStorage"
+      ]
+    },
+    "appSpeedAtDeployment": {
+      "score": 10,
+      "max": 10,
+      "notes": "Instant - no API calls"
+    },
+    "securityAtDeployment": {
+      "score": 10,
+      "max": 10,
+      "notes": "No auth needed, no sensitive data"
+    },
+    "bugDensityAtDeployment": {
+      "knownBugs": 0,
+      "notes": "Tested all flows"
+    },
+    "transferability": {
+      "score": 10,
+      "max": 10,
+      "notes": "Static hosting anywhere"
+    }
   },
   "postDeployment": {
-    "changeFailureRate": { "deployments": 0, "failures": 0, "rate": null, "notes": "Not yet deployed" },
-    "waitlistConversion": { "visitors": 0, "signups": 0, "rate": null, "notes": "No landing page" },
-    "componentReuseRate": { "sharedImports": 1, "localImports": 25, "rate": 4, "notes": "Uses server-utils" }
+    "changeFailureRate": {
+      "deployments": 0,
+      "failures": 0,
+      "rate": null,
+      "notes": "Not yet deployed"
+    },
+    "waitlistConversion": {
+      "visitors": 0,
+      "signups": 0,
+      "rate": null,
+      "notes": "No landing page"
+    },
+    "componentReuseRate": {
+      "sharedImports": 1,
+      "localImports": 25,
+      "rate": 4,
+      "notes": "Uses server-utils"
+    }
   },
-  "userStories": { "total": 10, "completed": 10, "pending": 0, "pendingList": [] },
+  "userStories": {
+    "total": 10,
+    "completed": 10,
+    "pending": 0,
+    "pendingList": []
+  },
   "lessonsLearned": [
     "Pattern reuse enables 20-minute builds",
     "localStorage-first apps score highest (no vulns, no infra cost)",
