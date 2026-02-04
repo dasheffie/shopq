@@ -13,7 +13,7 @@
         "List is saved to localStorage"
       ],
       "priority": 1,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-002",
@@ -25,7 +25,7 @@
         "Items are persisted to localStorage"
       ],
       "priority": 1,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-003",
@@ -37,7 +37,7 @@
         "State persists in localStorage"
       ],
       "priority": 1,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-004",
@@ -49,7 +49,7 @@
         "Change persists to localStorage"
       ],
       "priority": 2,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-005",
@@ -61,7 +61,7 @@
         "Categories are customizable"
       ],
       "priority": 2,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-006",
@@ -73,7 +73,7 @@
         "Fast load time"
       ],
       "priority": 1,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-007",
@@ -85,7 +85,7 @@
         "No account required"
       ],
       "priority": 3,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-008",
@@ -97,7 +97,7 @@
         "Learn from user's history"
       ],
       "priority": 3,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-009",
@@ -109,7 +109,7 @@
         "Count of items to be cleared shown"
       ],
       "priority": 2,
-      "passes": false
+      "passes": true
     },
     {
       "id": "US-010",
@@ -121,7 +121,7 @@
         "Each list has own items"
       ],
       "priority": 1,
-      "passes": false
+      "passes": true
     }
   ],
   "techStack": {
