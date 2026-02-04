@@ -161,7 +161,7 @@
     "waitlistConversion": { "visitors": 0, "signups": 0, "rate": null, "notes": "No landing page" },
     "componentReuseRate": { "sharedImports": 1, "localImports": 25, "rate": 4, "notes": "Uses server-utils" }
   },
-  "userStories": { "total": 10, "completed": 8, "pending": 2, "pendingList": ["US-007: Share List (partial)", "US-008: Quick Add Auto-Complete (done but could improve)"] },
+  "userStories": { "total": 10, "completed": 10, "pending": 0, "pendingList": [] },
   "lessonsLearned": [
     "Pattern reuse enables 20-minute builds",
     "localStorage-first apps score highest (no vulns, no infra cost)",
