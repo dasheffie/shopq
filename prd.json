@@ -1,0 +1,139 @@
+{
+  "projectName": "ShopQ",
+  "branchName": "feature/shopq-mvp",
+  "description": "Quick shopping list app - create, organize, and share shopping lists. localStorage-first, no backend needed.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create Shopping List",
+      "description": "User can create a new shopping list with a name",
+      "acceptanceCriteria": [
+        "User can enter list name and create list",
+        "List appears in sidebar/list view",
+        "List is saved to localStorage"
+      ],
+      "priority": 1,
+      "passes": false
+    },
+    {
+      "id": "US-002",
+      "title": "Add Items to List",
+      "description": "User can add items to a shopping list",
+      "acceptanceCriteria": [
+        "User can type item name and add to list",
+        "Items appear in list with checkbox",
+        "Items are persisted to localStorage"
+      ],
+      "priority": 1,
+      "passes": false
+    },
+    {
+      "id": "US-003",
+      "title": "Check Off Items",
+      "description": "User can mark items as purchased/complete",
+      "acceptanceCriteria": [
+        "Clicking checkbox marks item as done",
+        "Done items show strikethrough",
+        "State persists in localStorage"
+      ],
+      "priority": 1,
+      "passes": false
+    },
+    {
+      "id": "US-004",
+      "title": "Delete Items",
+      "description": "User can remove items from list",
+      "acceptanceCriteria": [
+        "Delete button/swipe removes item",
+        "Confirmation for delete (or easy undo)",
+        "Change persists to localStorage"
+      ],
+      "priority": 2,
+      "passes": false
+    },
+    {
+      "id": "US-005",
+      "title": "Organize by Category",
+      "description": "Items can be grouped by category (produce, dairy, etc)",
+      "acceptanceCriteria": [
+        "User can assign category to item",
+        "Items grouped by category in view",
+        "Categories are customizable"
+      ],
+      "priority": 2,
+      "passes": false
+    },
+    {
+      "id": "US-006",
+      "title": "Mobile Responsive",
+      "description": "App works well on mobile devices",
+      "acceptanceCriteria": [
+        "Touch-friendly interface",
+        "Readable on small screens",
+        "Fast load time"
+      ],
+      "priority": 1,
+      "passes": false
+    },
+    {
+      "id": "US-007",
+      "title": "Share List",
+      "description": "User can share list via link",
+      "acceptanceCriteria": [
+        "Generate shareable URL with list data encoded",
+        "Recipients can view/import shared list",
+        "No account required"
+      ],
+      "priority": 3,
+      "passes": false
+    },
+    {
+      "id": "US-008",
+      "title": "Quick Add with Auto-Complete",
+      "description": "Suggest common items as user types",
+      "acceptanceCriteria": [
+        "Show suggestions from common grocery items",
+        "User can select from dropdown",
+        "Learn from user's history"
+      ],
+      "priority": 3,
+      "passes": false
+    },
+    {
+      "id": "US-009",
+      "title": "Clear Completed Items",
+      "description": "One-click to remove all checked items",
+      "acceptanceCriteria": [
+        "Button to clear completed",
+        "Confirmation or undo option",
+        "Count of items to be cleared shown"
+      ],
+      "priority": 2,
+      "passes": false
+    },
+    {
+      "id": "US-010",
+      "title": "Multiple Lists",
+      "description": "Support multiple shopping lists",
+      "acceptanceCriteria": [
+        "User can create multiple lists",
+        "Easy switching between lists",
+        "Each list has own items"
+      ],
+      "priority": 1,
+      "passes": false
+    }
+  ],
+  "techStack": {
+    "frontend": "Vanilla HTML/CSS/JS",
+    "storage": "localStorage",
+    "server": "Express.js static file server",
+    "dependencies": ["express", "uuid"]
+  },
+  "codebasePatterns": [
+    "Follow GifCard pattern: single public/index.html with inline JS",
+    "Use server-utils.js from lodestar/lib for server boilerplate",
+    "Mobile-first CSS with CSS Grid/Flexbox",
+    "No external CSS frameworks"
+  ]
+}

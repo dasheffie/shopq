@@ -1,0 +1,23 @@
+# ShopQ Progress Log
+
+## Context
+- This is a Lodestar app targeting shopq.com domain
+- Goal: Build a high-scoring shopping list app (target: >71 Lodestar score)
+- Pattern: Follow GifCard (our top scorer) - localStorage, minimal server
+
+## Iteration 0 - Setup
+- PRD created with 10 user stories
+- Tech stack: Vanilla JS, localStorage, Express static server
+- Using server-utils.js from ../../../lib/server-utils.js
+
+## Codebase Patterns
+1. Server: Copy pattern from GifCard - minimal Express serving static files
+2. Frontend: Single index.html with inline <style> and <script>
+3. Storage: All data in localStorage, JSON stringify/parse
+4. No external APIs, no databases, no authentication
+
+## Next Steps
+- Create src/server.js (copy from GifCard)
+- Create public/index.html with app UI
+- Implement user stories in priority order
+
