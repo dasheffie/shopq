@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopQ - Quick Shopping Lists</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --primary: #4CAF50;
+      --primary-dark: #388E3C;
+      --danger: #f44336;
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --text: #333;
+      --text-light: #666;
+      --border: #ddd;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    
+    .app {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    header {
+      text-align: center;
+      padding: 1rem 0 1.5rem;
+    }
+    
+    header h1 {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    
+    header p {
+      color: var(--text-light);
+      margin-top: 0.25rem;
+    }
+    
+    /* Lists sidebar */
+    .lists-bar {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+      margin-bottom: 1rem;
+    }
+    
+    .list-tab {
+      padding: 0.5rem 1rem;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .list-tab:hover {
+      border-color: var(--primary);
+    }
+    
+    .list-tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .list-tab.new-list {
+      background: transparent;
+      border-style: dashed;
+    }
+    
+    /* Add item form */
+    .add-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .add-form input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    .add-form input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .add-form button {
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .add-form button:hover {
+      background: var(--primary-dark);
+    }
+    
+    /* Category selector */
+    .category-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .category-btn {
+      padding: 0.4rem 0.8rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .category-btn:hover, .category-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    /* Items list */
+    .items-container {
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .category-group {
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .category-group:last-child {
+      border-bottom: none;
+    }
+    
+    .category-header {
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    
+    .item:last-child {
+      border-bottom: none;
+    }
+    
+    .item:hover {
+      background: var(--bg);
+    }
+    
+    .item.done {
+      background: #f9f9f9;
+    }
+    
+    .item.done .item-name {
+      text-decoration: line-through;
+      color: var(--text-light);
+    }
+    
+    .item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+    
+    .item-name {
+      flex: 1;
+      font-size: 1rem;
+    }
+    
+    .item-delete {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      padding: 0.25rem;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      font-size: 1.2rem;
+    }
+    
+    .item-delete:hover {
+      opacity: 1;
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+    }
+    
+    .empty-state span {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    /* Actions bar */
+    .actions-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: var(--card);
+      border-radius: 8px;
+    }
+    
+    .clear-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .clear-btn:hover {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .share-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .share-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .item-count {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal.show {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+    }
+    
+    .modal-content h3 {
+      margin-bottom: 1rem;
+    }
+    
+    .modal-content input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-end;
+    }
+    
+    .modal-actions button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      color: white;
+    }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #333;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 1001;
+    }
+    
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    /* Autocomplete */
+    .autocomplete-container {
+      position: relative;
+    }
+    
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      margin-top: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .autocomplete-list.show {
+      display: block;
+    }
+    
+    .autocomplete-item {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .autocomplete-item:hover {
+      background: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🛒 ShopQ</h1>
+      <p>Quick shopping lists</p>
+    </header>
+    
+    <!-- List tabs -->
+    <div class="lists-bar" id="listTabs">
+      <!-- Generated by JS -->
+    </div>
+    
+    <!-- Add item form -->
+    <div class="add-form">
+      <div class="autocomplete-container" style="flex:1">
+        <input type="text" id="itemInput" placeholder="Add an item..." autocomplete="off">
+        <div class="autocomplete-list" id="autocompleteList"></div>
+      </div>
+      <button onclick="addItem()">Add</button>
+    </div>
+    
+    <!-- Category filter -->
+    <div class="category-row" id="categoryFilter">
+      <!-- Generated by JS -->
+    </div>
+    
+    <!-- Items -->
+    <div class="items-container" id="itemsContainer">
+      <!-- Generated by JS -->
+    </div>
+    
+    <!-- Actions -->
+    <div class="actions-bar">
+      <button class="clear-btn" onclick="clearCompleted()">Clear Done</button>
+      <span class="item-count" id="itemCount">0 items</span>
+      <button class="share-btn" onclick="shareList()">Share 📤</button>
+    </div>
+  </div>
+  
+  <!-- New List Modal -->
+  <div class="modal" id="newListModal">
+    <div class="modal-content">
+      <h3>New List</h3>
+      <input type="text" id="newListName" placeholder="List name...">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary" onclick="createList()">Create</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============ DATA ============
+    const CATEGORIES = [
+      { id: 'produce', name: '🥬 Produce', color: '#4CAF50' },
+      { id: 'dairy', name: '🥛 Dairy', color: '#2196F3' },
+      { id: 'meat', name: '🥩 Meat', color: '#f44336' },
+      { id: 'bakery', name: '🍞 Bakery', color: '#FF9800' },
+      { id: 'frozen', name: '🧊 Frozen', color: '#00BCD4' },
+      { id: 'pantry', name: '🥫 Pantry', color: '#795548' },
+      { id: 'beverages', name: '🥤 Beverages', color: '#9C27B0' },
+      { id: 'other', name: '📦 Other', color: '#607D8B' }
+    ];
+    
+    const COMMON_ITEMS = [
+      { name: 'Milk', category: 'dairy' },
+      { name: 'Eggs', category: 'dairy' },
+      { name: 'Bread', category: 'bakery' },
+      { name: 'Butter', category: 'dairy' },
+      { name: 'Cheese', category: 'dairy' },
+      { name: 'Chicken', category: 'meat' },
+      { name: 'Ground Beef', category: 'meat' },
+      { name: 'Apples', category: 'produce' },
+      { name: 'Bananas', category: 'produce' },
+      { name: 'Lettuce', category: 'produce' },
+      { name: 'Tomatoes', category: 'produce' },
+      { name: 'Onions', category: 'produce' },
+      { name: 'Potatoes', category: 'produce' },
+      { name: 'Carrots', category: 'produce' },
+      { name: 'Rice', category: 'pantry' },
+      { name: 'Pasta', category: 'pantry' },
+      { name: 'Cereal', category: 'pantry' },
+      { name: 'Coffee', category: 'beverages' },
+      { name: 'Orange Juice', category: 'beverages' },
+      { name: 'Water', category: 'beverages' },
+      { name: 'Ice Cream', category: 'frozen' },
+      { name: 'Frozen Pizza', category: 'frozen' },
+      { name: 'Yogurt', category: 'dairy' },
+      { name: 'Bacon', category: 'meat' },
+      { name: 'Salmon', category: 'meat' }
+    ];
+    
+    // ============ STATE ============
+    let lists = [];
+    let currentListId = null;
+    let selectedCategory = 'all';
+    
+    // ============ STORAGE ============
+    function loadData() {
+      try {
+        const saved = localStorage.getItem('shopq_lists');
+        lists = saved ? JSON.parse(saved) : [];
+        
+        // Check for shared list in URL
+        const params = new URLSearchParams(window.location.search);
+        const shared = params.get('list');
+        if (shared) {
+          importSharedList(shared);
+          // Clear the URL
+          window.history.replaceState({}, '', window.location.pathname);
+        }
+        
+        // Create default list if none exist
+        if (lists.length === 0) {
+          lists.push({
+            id: generateId(),
+            name: 'My List',
+            items: []
+          });
+        }
+        
+        currentListId = lists[0].id;
+        saveData();
+      } catch (e) {
+        console.error('Failed to load data:', e);
+        lists = [{ id: generateId(), name: 'My List', items: [] }];
+        currentListId = lists[0].id;
+      }
+    }
+    
+    function saveData() {
+      localStorage.setItem('shopq_lists', JSON.stringify(lists));
+    }
+    
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+    
+    // ============ LISTS ============
+    function getCurrentList() {
+      return lists.find(l => l.id === currentListId) || lists[0];
+    }
+    
+    function switchList(id) {
+      currentListId = id;
+      render();
+    }
+    
+    function showNewListModal() {
+      document.getElementById('newListModal').classList.add('show');
+      document.getElementById('newListName').value = '';
+      document.getElementById('newListName').focus();
+    }
+    
+    function closeModal() {
+      document.getElementById('newListModal').classList.remove('show');
+    }
+    
+    function createList() {
+      const name = document.getElementById('newListName').value.trim();
+      if (!name) return;
+      
+      const newList = {
+        id: generateId(),
+        name: name,
+        items: []
+      };
+      
+      lists.push(newList);
+      currentListId = newList.id;
+      saveData();
+      closeModal();
+      render();
+      showToast(`Created "${name}"`);
+    }
+    
+    function deleteList(id) {
+      if (lists.length <= 1) {
+        showToast("Can't delete the last list");
+        return;
+      }
+      
+      const list = lists.find(l => l.id === id);
+      if (confirm(`Delete "${list.name}"?`)) {
+        lists = lists.filter(l => l.id !== id);
+        if (currentListId === id) {
+          currentListId = lists[0].id;
+        }
+        saveData();
+        render();
+        showToast('List deleted');
+      }
+    }
+    
+    // ============ ITEMS ============
+    function addItem() {
+      const input = document.getElementById('itemInput');
+      const name = input.value.trim();
+      if (!name) return;
+      
+      const list = getCurrentList();
+      
+      // Find category from common items or use selected
+      let category = selectedCategory === 'all' ? 'other' : selectedCategory;
+      const commonItem = COMMON_ITEMS.find(i => i.name.toLowerCase() === name.toLowerCase());
+      if (commonItem) {
+        category = commonItem.category;
+      }
+      
+      list.items.push({
+        id: generateId(),
+        name: name,
+        category: category,
+        done: false,
+        createdAt: Date.now()
+      });
+      
+      // Add to history for autocomplete
+      addToHistory(name, category);
+      
+      input.value = '';
+      hideAutocomplete();
+      saveData();
+      render();
+    }
+    
+    function toggleItem(itemId) {
+      const list = getCurrentList();
+      const item = list.items.find(i => i.id === itemId);
+      if (item) {
+        item.done = !item.done;
+        saveData();
+        render();
+      }
+    }
+    
+    function deleteItem(itemId) {
+      const list = getCurrentList();
+      list.items = list.items.filter(i => i.id !== itemId);
+      saveData();
+      render();
+    }
+    
+    function clearCompleted() {
+      const list = getCurrentList();
+      const count = list.items.filter(i => i.done).length;
+      if (count === 0) {
+        showToast('No completed items');
+        return;
+      }
+      
+      if (confirm(`Clear ${count} completed item${count > 1 ? 's' : ''}?`)) {
+        list.items = list.items.filter(i => !i.done);
+        saveData();
+        render();
+        showToast(`Cleared ${count} item${count > 1 ? 's' : ''}`);
+      }
+    }
+    
+    // ============ AUTOCOMPLETE ============
+    function getItemHistory() {
+      try {
+        return JSON.parse(localStorage.getItem('shopq_history') || '[]');
+      } catch {
+        return [];
+      }
+    }
+    
+    function addToHistory(name, category) {
+      let history = getItemHistory();
+      // Remove if exists
+      history = history.filter(h => h.name.toLowerCase() !== name.toLowerCase());
+      // Add to front
+      history.unshift({ name, category });
+      // Keep only 50 items
+      history = history.slice(0, 50);
+      localStorage.setItem('shopq_history', JSON.stringify(history));
+    }
+    
+    function showAutocomplete(query) {
+      const list = document.getElementById('autocompleteList');
+      if (!query) {
+        hideAutocomplete();
+        return;
+      }
+      
+      const lowerQuery = query.toLowerCase();
+      const history = getItemHistory();
+      
+      // Combine history and common items
+      const allItems = [...history, ...COMMON_ITEMS];
+      const seen = new Set();
+      const matches = allItems.filter(item => {
+        const lower = item.name.toLowerCase();
+        if (seen.has(lower)) return false;
+        if (!lower.includes(lowerQuery)) return false;
+        seen.add(lower);
+        return true;
+      }).slice(0, 8);
+      
+      if (matches.length === 0) {
+        hideAutocomplete();
+        return;
+      }
+      
+      list.innerHTML = matches.map(item => `
+        <div class="autocomplete-item" onclick="selectAutocomplete('${item.name}', '${item.category}')">
+          ${item.name}
+        </div>
+      `).join('');
+      list.classList.add('show');
+    }
+    
+    function hideAutocomplete() {
+      document.getElementById('autocompleteList').classList.remove('show');
+    }
+    
+    function selectAutocomplete(name, category) {
+      document.getElementById('itemInput').value = name;
+      selectedCategory = category;
+      hideAutocomplete();
+      addItem();
+    }
+    
+    // ============ SHARE ============
+    function shareList() {
+      const list = getCurrentList();
+      const data = {
+        name: list.name,
+        items: list.items.map(i => ({ name: i.name, category: i.category }))
+      };
+      
+      const encoded = btoa(JSON.stringify(data));
+      const url = `${window.location.origin}${window.location.pathname}?list=${encoded}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: `${list.name} - ShopQ`,
+          text: `Check out my shopping list!`,
+          url: url
+        });
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url);
+        showToast('Link copied to clipboard!');
+      } else {
+        prompt('Copy this link:', url);
+      }
+    }
+    
+    function importSharedList(encoded) {
+      try {
+        const data = JSON.parse(atob(encoded));
+        const newList = {
+          id: generateId(),
+          name: data.name + ' (shared)',
+          items: data.items.map(i => ({
+            id: generateId(),
+            name: i.name,
+            category: i.category,
+            done: false,
+            createdAt: Date.now()
+          }))
+        };
+        lists.push(newList);
+        currentListId = newList.id;
+        saveData();
+        showToast(`Imported "${data.name}"`);
+      } catch (e) {
+        console.error('Failed to import list:', e);
+      }
+    }
+    
+    // ============ TOAST ============
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    
+    // ============ RENDER ============
+    function render() {
+      renderListTabs();
+      renderCategoryFilter();
+      renderItems();
+      updateItemCount();
+    }
+    
+    function renderListTabs() {
+      const container = document.getElementById('listTabs');
+      container.innerHTML = lists.map(list => `
+        <div class="list-tab ${list.id === currentListId ? 'active' : ''}" 
+             onclick="switchList('${list.id}')"
+             oncontextmenu="event.preventDefault(); deleteList('${list.id}')">
+          ${list.name}
+        </div>
+      `).join('') + `
+        <div class="list-tab new-list" onclick="showNewListModal()">+ New</div>
+      `;
+    }
+    
+    function renderCategoryFilter() {
+      const container = document.getElementById('categoryFilter');
+      container.innerHTML = `
+        <div class="category-btn ${selectedCategory === 'all' ? 'active' : ''}" 
+             onclick="filterCategory('all')">All</div>
+      ` + CATEGORIES.map(cat => `
+        <div class="category-btn ${selectedCategory === cat.id ? 'active' : ''}"
+             onclick="filterCategory('${cat.id}')">${cat.name}</div>
+      `).join('');
+    }
+    
+    function filterCategory(category) {
+      selectedCategory = category;
+      render();
+    }
+    
+    function renderItems() {
+      const container = document.getElementById('itemsContainer');
+      const list = getCurrentList();
+      
+      if (list.items.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <span>🛒</span>
+            <p>Your list is empty</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Add items above to get started</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Filter by category
+      let items = list.items;
+      if (selectedCategory !== 'all') {
+        items = items.filter(i => i.category === selectedCategory);
+      }
+      
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <span>🔍</span>
+            <p>No items in this category</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Group by category
+      const grouped = {};
+      items.forEach(item => {
+        if (!grouped[item.category]) {
+          grouped[item.category] = [];
+        }
+        grouped[item.category].push(item);
+      });
+      
+      // Render grouped
+      let html = '';
+      CATEGORIES.forEach(cat => {
+        if (grouped[cat.id]) {
+          html += `
+            <div class="category-group">
+              <div class="category-header">${cat.name}</div>
+              ${grouped[cat.id].map(item => `
+                <div class="item ${item.done ? 'done' : ''}">
+                  <input type="checkbox" ${item.done ? 'checked' : ''} 
+                         onchange="toggleItem('${item.id}')">
+                  <span class="item-name">${escapeHtml(item.name)}</span>
+                  <button class="item-delete" onclick="deleteItem('${item.id}')">×</button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      });
+      
+      container.innerHTML = html;
+    }
+    
+    function updateItemCount() {
+      const list = getCurrentList();
+      const total = list.items.length;
+      const done = list.items.filter(i => i.done).length;
+      document.getElementById('itemCount').textContent = 
+        `${done}/${total} item${total !== 1 ? 's' : ''} done`;
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // ============ EVENTS ============
+    document.getElementById('itemInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') addItem();
+    });
+    
+    document.getElementById('itemInput').addEventListener('input', (e) => {
+      showAutocomplete(e.target.value);
+    });
+    
+    document.getElementById('newListName').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') createList();
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.autocomplete-container')) {
+        hideAutocomplete();
+      }
+    });
+    
+    // ============ INIT ============
+    loadData();
+    render();
+  </script>
+</body>
+</html>

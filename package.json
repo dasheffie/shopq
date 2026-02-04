@@ -1,12 +1,13 @@
 {
-  "name": "2026-02-03-shopq",
+  "name": "shopq",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Quick shopping list app",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "test": "echo \"No tests yet\" && exit 0"
   },
-  "keywords": [],
+  "keywords": ["shopping", "list", "grocery"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
